@@ -62,10 +62,23 @@ def classify_by_rules(message: dict, config: Config) -> ClassificationResult | N
     if "IMPORTANT" in label_ids and "IMPORTANT" in config.protected_labels:
         return ClassificationResult(message["id"], "KEEP", "marked important", message["size_estimate"])
 
+    # Blocked sender or domain
+    for blocked in config.blocked_senders:
+        if blocked.startswith("@"):
+            if blocked in sender:
+                return ClassificationResult(message["id"], "TRASH", f"blocked domain {blocked}", message["size_estimate"])
+        else:
+            if blocked in sender:
+                return ClassificationResult(message["id"], "TRASH", f"blocked sender", message["size_estimate"])
+
     # Trash by category
     for category_key, gmail_label in CATEGORY_LABEL_MAP.items():
         if gmail_label in label_ids and config.trash_categories.get(category_key, False):
             return ClassificationResult(message["id"], "TRASH", gmail_label, message["size_estimate"])
+
+    # Bulk/promotional email with unsubscribe header
+    if message.get("has_unsubscribe"):
+        return ClassificationResult(message["id"], "TRASH", "bulk/promotional email (unsubscribe header)", message["size_estimate"])
 
     return None  # ambiguous — needs AI
 

@@ -14,6 +14,10 @@ forums      = true
 # Use "@domain.com" to protect an entire domain.
 protected_senders = []
 
+# Emails from these senders or domains are always trashed.
+# Use "@domain.com" to block an entire domain.
+blocked_senders = []
+
 # Emails carrying any of these Gmail labels are never touched.
 protected_labels = ["STARRED", "IMPORTANT"]
 
@@ -33,3 +37,19 @@ credentials_file = "credentials.json"
 
 # Where to store the OAuth token after first login (~ is expanded automatically)
 token_file = "~/.gmail-space-reducer/token.json"
+
+# Where to store the Drive OAuth token (separate from Gmail token)
+drive_token_file = "~/.gmail-space-reducer/drive_token.json"
+
+[drive]
+# Trash files larger than this size (MB)
+large_file_threshold_mb = 50
+
+# Trash files not modified or opened in this many days
+old_file_days = 365
+
+# Trash duplicate files (same content, keep the newest copy)
+check_duplicates = true
+
+# When executing, call emptyTrash to permanently delete all Drive Trash contents
+empty_trash = true

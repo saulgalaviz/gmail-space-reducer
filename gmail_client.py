@@ -92,6 +92,7 @@ def fetch_message_metadata(service, message_ids: list[str]) -> list[dict]:
             "snippet": response.get("snippet", ""),
             "size_estimate": response.get("sizeEstimate", 0),
             "label_ids": response.get("labelIds", []),
+            "has_unsubscribe": "list-unsubscribe" in headers,
         }
 
     # Process in chunks of 100 (Gmail batch limit)
@@ -104,7 +105,7 @@ def fetch_message_metadata(service, message_ids: list[str]) -> list[dict]:
                     userId="me",
                     id=msg_id,
                     format="metadata",
-                    metadataHeaders=["Subject", "From"],
+                    metadataHeaders=["Subject", "From", "List-Unsubscribe"],
                 )
             )
         batch.execute()
