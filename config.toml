@@ -1,0 +1,35 @@
+[classification]
+# Set to false to only use Gmail category labels, skip Claude AI
+use_ai_classification = true
+
+# Which Gmail categories to auto-trash (true = trash, false = skip)
+[classification.trash_categories]
+promotions = true
+social      = true
+updates     = true
+forums      = true
+
+[protection]
+# Emails from these senders or domains are always kept.
+# Use "@domain.com" to protect an entire domain.
+protected_senders = []
+
+# Emails carrying any of these Gmail labels are never touched.
+protected_labels = ["STARRED", "IMPORTANT"]
+
+[api]
+# Messages fetched per Gmail API page (max 500, recommended 100)
+batch_size = 100
+
+# Seconds to pause between Gmail batchModify calls (avoids quota errors)
+trash_delay_seconds = 1.0
+
+# Claude model to use for AI classification
+ai_model = "claude-haiku-4-5-20251001"
+
+[paths]
+# Path to your downloaded Google Cloud credentials JSON
+credentials_file = "credentials.json"
+
+# Where to store the OAuth token after first login (~ is expanded automatically)
+token_file = "~/.gmail-space-reducer/token.json"
